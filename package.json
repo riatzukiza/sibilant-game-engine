@@ -1,13 +1,12 @@
 {
-    "name":"sibilant-game-engine",
-    "author":"Aaron Beavers",
-    "version":"0.1.0",
-    "dependencies":{
+    "name": "sibilant-game-engine",
+    "author": "Aaron Beavers",
+    "version": "0.1.0",
+    "dependencies": {
         "jimp": "0.2.27",
         "mousetrap": "*",
         "source-map-support": "^0.4.11",
         "mathjs": "*",
-
         "kit": "git+https://github.com/riatzukiza/kit.git",
         "kit-events": "git+https://github.com/riatzukiza/kit-events.git",
         "kit-file-system": "git+https://github.com/riatzukiza/kit-file-system.git",
