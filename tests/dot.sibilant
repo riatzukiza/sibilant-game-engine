@@ -1,17 +1,21 @@
-
-
+(namespace engine-tests)
 (include "kit/header"
          "kit-html/src/dom")
 
 (import-namespace kit)
 (import-namespace dom)
+
 (include "../inc/electron")
 
-(require! (lit Game) "../src/game"
-          (lit Rendering) "../src/systems/rendering/rendering"
-          (lit Dot) "../src/systems/rendering/dot"
-          (lit Position) "../src/systems/position"
-          (lit Physics) "../src/systems/physics")
+(assign module.filename (Path.join (process.cwd) "./tests/dot.sibilant"))
+
+(require! (lit Game) "../js/game"
+          (lit Rendering) "../js/systems/rendering/rendering"
+          (lit Dot) "../js/systems/rendering/dot"
+          (lit Position) "../js/systems/position"
+          (lit Physics) "../js/systems/physics"
+          (lit Scalar) "../js/math/scalar"
+          )
 
 
 (const rendering (.load Rendering
@@ -21,26 +25,34 @@
 
 (.resize rendering (.sub Scalar  (window.size) 4))
 
-(var stage (dom (.div .id 'stage )))
+(const stage (dom (.div .id 'stage )))
 
 
-(var container
-     (dom
-      (.div .id "container"
-            rendering.context.canvas)))
-(with-dom Document-root
-          (.div .id 'frame container))
+(const container (dom (.div .id "container" rendering.context.canvas)))
+(with-dom Document-root (.div .id 'frame container))
 
 (var game ((create Game) rendering [Physics   Position   Dot]))
 (.start game)
 
+(include "../inc/misc.sibilant")
+(var rgba (memoize (=> (r g b a) (lit r g b a))))
 (def entity (aspects data) (.spawn game.ent aspects data))
-(def rgba (r g b a) (lit r g b a))
-(def coordinate (x y))
+(def coordinate (x y) (lit x y))
 (def physical-properties (mass scale forces)
      (lit mass scale forces))
 
-(entity [Dot Position Physics]
-        (rgba 255 0 0 255)
-        (coordinate 500 500)
-        (physical-properties 10 10 []))
+(var dot (entity [Dot Position Physics]))
+
+
+(set (.get game.systems Dot dot)
+     'color (rgba 255 0 0 255))
+
+(set (.get game.systems Position dot )
+     'x 10
+     'y 10
+     'z 11)
+
+(set (.get game.systems Physics dot)
+     'scale 5
+     'mass 10
+     'forces [])

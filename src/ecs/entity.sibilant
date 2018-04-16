@@ -9,18 +9,15 @@
   (init (system
          id
          aspects
-         data
          (components
-          (.map data (=> (d i)
-                         (.spawn (.get system.process.systems
-                                       (get aspects i ))
-                                 this
-                                 d))))))
+          (.map aspects (=> (aspect i)
+                         (.spawn (.get system.process.systems aspect)
+                                 this))))))
 
   (def clear () (.each this.components (=> (c) (.clear c.system this)))
        (assign this.id null))
 
-  (def spawn ( data aspects system) (.spawn system aspects data)))
+  (def spawn (  aspects system) (.spawn system aspects )))
 
 (export Entity)
 
@@ -31,8 +28,8 @@
 
   (def clear () (.clear this.pool))
 
-  (def spawn (aspects data)
-       (.spawn this.pool this (incr this.current-id) aspects data))
+  (def spawn (aspects )
+       (.spawn this.pool this (incr this.current-id) aspects ))
   ;; (def define (name (lit aspects ))
   ;;   ((create Entity-group)
   ;;    name
@@ -49,7 +46,7 @@
   (def clear ()
        (each group (e) (.clear e)))
 
-  (def-generic spawn (data aspects system group)
-    (collect e (.spawn system aspects data)
+  (def-generic spawn ( aspects system group)
+    (collect e (.spawn system aspects )
              (.add group e))))
 (export Entity-group)

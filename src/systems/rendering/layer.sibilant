@@ -30,8 +30,11 @@
 
 
         (.call Pooled-system.init this
-               limit
                interface
+               ;; totally want a dynamic pool here, but because the members
+               ;; array is a fixed sized element, I will need to extend the base
+               ;; object pool to use structs, and extend the dyn pool to use the new obj
+               ;; pool type for its buckets.
                ((create Object-pool) limit interface *members))
 
         (.push this.rendering.layers this))

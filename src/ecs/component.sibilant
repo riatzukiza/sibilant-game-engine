@@ -9,7 +9,8 @@
 
   (def register ())
 
-  (init (entity data system)
+  (init (entity system)
+        (set entity (.to-lower-case this.name) this)
         (.register this)))
 
 (export Component)
@@ -39,8 +40,8 @@
   (def-generic get (entity components)
     (.get components entity))
 
-  (def-generic spawn (entity data pool components)
-    (collect c (.spawn pool entity data this)
+  (def-generic spawn (entity pool components)
+    (collect c (.spawn pool entity  this)
              (.set components entity c)))
 
 

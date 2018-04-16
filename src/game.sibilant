@@ -25,13 +25,19 @@
              (if ent (.get sys ent)
                sys))
 
-        (.each system-types (=> (s) (print "creating system" s)
-                                (.push systems [s.symbol ((create s) this)])))
+        (.each system-types
+               (=> (s) (print "creating system" s)
+                   (.push systems [s.symbol ((create s) this)])))
         (print "done creating systems" this.systems)
 
         (.push this.systems [rendering.symbol rendering]))
 
   (gett ent this.entities)
+  (gett game this)
+  (gett process this)
+
+  (def-generic add (s systems game) (.push systems [s.symbol ((create s) this)]))
+
 
   (def-generic start (systems events ticker rendering)
 

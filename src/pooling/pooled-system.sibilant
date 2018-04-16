@@ -3,17 +3,11 @@
 
 (import-namespace interface)
 
-(require! (lit Object-pool) "./object-pool")
+(require! (lit Dynamic-pool) "./dynamic-pool")
 
 (define  Pooled-system  Interface
-  (init (limit
-         interface
-         (*pool ((create Object-pool) limit interface)))
-        (.register this interface)
-        )
-
-  (limit 10000)
-
+  (init ( interface (*pool ((create Dynamic-pool) interface)))
+        (.register this interface))
 
   (systems (new Map))
 

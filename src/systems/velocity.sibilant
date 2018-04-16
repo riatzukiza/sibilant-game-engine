@@ -7,13 +7,8 @@
           (lit Position) "./position")
 
 (define Velocity-interface Component
-  (gett displacement  this.data)
-
-  (gett xd (first this.displacement))
-  (gett yd (second this.displacement))
-
-  (sett xd v (set this.data 0 v))
-  (sett yd v (set this.data 1 v))
+  (xd 0)
+  (yd 0)
 
   (gett pos (.get this.system.process.systems Position this.entity))
   (def accelerate ([v1,v2])
@@ -30,7 +25,7 @@
 
   (def *update-component (m)
 
-       (var p m.pos [xd yd] m.data)
+       (var p m.pos (lit xd yd) m)
 
        (assign m.moved false)
        (unless (and (= xd 0)

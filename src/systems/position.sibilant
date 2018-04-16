@@ -5,11 +5,10 @@
 (require! (lit Component System) "../ecs/component")
 
 (define Position-interface Component
-  (gett x this.data.x)
-  (sett x x (assign this.data.x x))
+  (x 0)
+  (y 0)
+  (z 0))
 
-  (gett y this.data.y)
-  (sett y y (assign this.data.y y)))
 (export Position-interface)
 
 (define Position System

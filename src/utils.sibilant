@@ -1,10 +1,10 @@
 (include "kit/header"
-         "../../../inc/async")
+         "../inc/async")
 
 (import-namespace async)
 (import-namespace kit)
 
-(include "../../../inc/misc.sibilant")
+(include "../inc/misc")
 
 (require! m 'mathjs
           (lit Event-emitter) "kit-events"

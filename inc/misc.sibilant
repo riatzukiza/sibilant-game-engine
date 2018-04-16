@@ -1,4 +1,5 @@
 
+(require! (lit Tree-map) "tree-kit")
 (macro in (  o k) [k " in " o])
 
 (macro sprint (...args) `(print ...@(Array.bind args (=> (a) [`(quote @a) a]))))
@@ -44,3 +45,11 @@
            (.for-each (=> (k) (f (get this k) k)))
            )
      )
+
+(def Tree-map.get ((dots args))
+     (get (.find this (dots args)) 'value))
+(def memoize (f)
+     (var cache ((create Tree-map)))
+     (=> ((dots args))
+         (remember cache args
+                   (f (dots args)))))

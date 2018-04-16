@@ -24,7 +24,6 @@
 
   (init
    ((dimensions (window.size))
-    (limit 100)
     (blend true )
     (context (Gl.context dimensions blend))
     (layers []))
@@ -44,7 +43,7 @@
                          context.gl.ONE
                          context.gl.ONE_MINUS_SRC_ALPHA)
 
-   (.call Pooled-system.init this limit))
+   (.call Pooled-system.init this ))
 
   (interface Layer)
 
@@ -57,8 +56,8 @@
   (def-generic resize ([ width height] context)
     (.resize context width height))
 
-  (def load ((lit dimensions limit blend))
-       ((create Rendering ) dimensions limit blend))
+  (def load ((lit dimensions  blend))
+       ((create Rendering ) dimensions  blend))
 
   (def-generic update (layers context)
     "render each visible dot to the screen"

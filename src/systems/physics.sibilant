@@ -2,26 +2,24 @@
 (include "kit-interface/header")
 
 (import-namespace interface)
+
 (require! (lit Component System) "../ecs/component"
           (lit Velocity) "../systems/velocity"
           (lit Position) "../systems/position")
 
 (define Physical-properties Component
-  (gett mass this.data.mass)
-  (gett scale this.data.scale)
-  (gett volume this.scale)
 
-  (gett height this.data.height)
-  (gett width this.data.width)
+  (scale 1)
+  (mass 1)
+  (forces [])
 
   (gett density (/ this.mass this.volume))
 
-  (gett speed this.data.speed)
   (gett velocity (.get this.system.process.systems Velocity this.entity))
-  (gett forces this.data.forces)
 
   (gett position (.get this.system.process.systems Position this.entity))
   (gett location this.position))
+
 (export Physical-properties)
 
 (define Physics System
