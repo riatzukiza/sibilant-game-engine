@@ -19,7 +19,6 @@
   (area 0)
   (gett dimensions this.area)
   (gett dim this.dimensions)
-  (gett type this.type)
 
   (gett scale (/ this.physics.scale 2))
   (gett physics (.get this.system.process.systems Physics this.entity))

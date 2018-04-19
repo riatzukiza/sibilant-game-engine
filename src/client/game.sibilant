@@ -17,7 +17,8 @@
          (ticker ((create Ticker) (* game-speed 60) events))
          (systems ((create Ordered-map))))
 
-        (var get-system-by-symbol systems.get)
+        (var get-system-by-symbol systems.get
+             set-system-by-symbol systems.set)
 
         (def systems.get (interface ent)
              (var sys (get-system-by-symbol.call systems interface.symbol))

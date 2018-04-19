@@ -7,12 +7,18 @@
           (lit Vertex) "./vertex"
 
           (lit Position) "../position"
-          (lit Gl ) "../../gl")
+          (lit Gl ) "../../gl"
+          (lit read-file-sync) fs)
 
+(def read-file (path)
+     (read-file-sync path "utf8"))
 (macro read-shader (path)
        (require! 'fs)
        (print "loading shader" path.token)
        ["`" (fs.read-file-sync (eval path.token) "utf8") "`"])
+(def load-shader (path)
+     ()
+     )
 
 
 (define uniforms Interface

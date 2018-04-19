@@ -18,6 +18,16 @@
 
      enabled (#-> .enable))
 
+(def allow-alpha-blending (context)
+     (.enable context.gl context.gl.BLEND)
+
+     (.blend-equation context.gl context.gl.FUNC_ADD)
+
+     (.blend-func-separate context.gl
+                           context.gl.SRC_ALPHA
+                           context.gl.ONE_MINUS_SRC_ALPHA
+                           context.gl.ONE
+                           context.gl.ONE_MINUS_SRC_ALPHA))
 
 
 (define Rendering Pooled-system
@@ -33,15 +43,7 @@
         'context context
         'rendering this)
 
-   (.enable context.gl context.gl.BLEND)
-
-   (.blend-equation context.gl context.gl.FUNC_ADD)
-
-   (.blend-func-separate context.gl
-                         context.gl.SRC_ALPHA
-                         context.gl.ONE_MINUS_SRC_ALPHA
-                         context.gl.ONE
-                         context.gl.ONE_MINUS_SRC_ALPHA)
+   (if! blend (allow-alpha-blending context))
 
    (.call Pooled-system.init this ))
 
