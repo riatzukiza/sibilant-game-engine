@@ -1,0 +1,18 @@
+(var stage (dom (.div .id "stage")))
+(var canvas2d (.spawn Canvas2d stage))
+
+(var game (.spawn Game canvas2d [Dot Position]))
+
+(var tester (.spawn game.ent [Dot Position]))
+
+(var red (rgba 255 0 0 255))
+
+(def-entity tester (x y)
+  (Position 'x x 'y y)
+  (Dot 'color red))
+
+(var dot (tester 50 50))
+
+(with-dom Document-body
+          (.div .id "main-container"
+                stage))
