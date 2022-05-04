@@ -77,11 +77,6 @@ var CollisionBounds = Component.define("CollisionBounds", {
         return this.dimensions;
 
     },
-    get type() {
-
-        return this.type;
-
-    },
     get scale() {
 
         return (this.physics.scale / 2);
