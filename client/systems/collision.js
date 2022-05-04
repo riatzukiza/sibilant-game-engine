@@ -138,7 +138,7 @@ var Collision = System.define("Collision", {
         /* eval.sibilant:9:73 */
 
         return (function() {
-            if (!((c_.checked || c === c_ || c.type === "static"))) {
+            if (!(( c === c_ || c.type === "static"))) {
                 var d = [(c_.minBounds.x - c.maxBounds.x), (c_.minBounds.y - c.maxBounds.y), (c.minBounds.x - c_.maxBounds.x), (c.minBounds.y - c_.maxBounds.y)];
                 var d1x = d[0],
                     d1y = d[1],
@@ -159,7 +159,7 @@ var Collision = System.define("Collision", {
         return (function() {
             if (!((c.type === "static" || c.colliding))) {
                 c.system.components.each(this._check(c));
-                return c.checked = true;
+                // return c.checked = true;
             }
         }).call(this);
 
