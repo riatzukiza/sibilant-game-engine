@@ -182,7 +182,7 @@ var Collision = System.define("Collision", {
 
     components.each(((c) => {
 
-      this.bitField.insert([c.pos.x,c.pos.y],c)
+      this.bitField.set([c.pos.x,c.pos.y],c)
       this.quads.insert({
         x:c.pos.x,
         y:c.pos.y,
