@@ -13,6 +13,8 @@ var {
 var {
     TreeMap
 } = require("tree-kit");
+
+const QuadTree = require("@timohausmann/quadtree-js")
 Array.prototype.each = (function Array$prototype$each$(f) {
     /* Array.prototype.each inc/misc.sibilant:40:0 */
 
@@ -55,114 +57,141 @@ var memoize = (function memoize$(f) {
 
     });
 });
-var {
-    Component,
-    System
-} = require("../ecs/component"), {
-    Physics
-} = require("./physics"), {
-    Position
-} = require("./position"), {
-    Velocity
-} = require("./velocity");
+var {Component, System} = require("../ecs/component"),
+    {Physics} = require("./physics"),
+    {Position} = require("./position"),
+    {Velocity} = require("./velocity");
+
 var CollisionBounds = Component.define("CollisionBounds", {
-    area: 0,
-    get dimensions() {
+  area: 0,
 
-        return this.area;
+  get dimensions() {
 
-    },
-    get dim() {
+    return this.area;
 
-        return this.dimensions;
+  },
+  get dim() {
 
-    },
-    get scale() {
+    return this.dimensions;
 
-        return (this.physics.scale / 2);
+  },
+  get scale() {
 
-    },
-    get physics() {
+    return (this.physics.scale / 2);
 
-        return this.system.process.systems.get(Physics, this.entity);
+  },
+  get physics() {
 
-    },
-    get minBounds() {
+    return this.system.process.systems.get(Physics, this.entity);
 
-        var height = this.scale,
-            width = this.scale;
-        var {
-            x,
-            y
-        } = this.pos;
-        return {
-            x: (x - width),
-            y: (y - height)
-        };
+  },
+  get minBounds() {
 
-    },
-    get maxBounds() {
+    var height = this.scale,
+        width = this.scale;
+    var {
+      x,
+      y
+    } = this.pos;
+    return {
+      x: (x - width),
+      y: (y - height)
+    };
 
-        var height = this.scale,
-            width = this.scale;
-        var {
-            x,
-            y
-        } = this.pos;
-        return {
-            x: (x + width),
-            y: (y + height)
-        };
+  },
+  get maxBounds() {
 
-    },
-    get position() {
+    var height = this.scale,
+        width = this.scale;
+    var {
+      x,
+      y
+    } = this.pos;
+    return {
+      x: (x + width),
+      y: (y + height)
+    };
 
-        return this.system.process.systems.get(Position, this.entity);
+  },
+  get position() {
 
-    },
-    get pos() {
+    return this.system.process.systems.get(Position, this.entity);
 
-        return this.position;
+  },
+  get pos() {
 
-    },
-    get velocity() {
+    return this.position;
 
-        return this.system.process.systems.get(Velocity, this.entity);
+  },
+  get velocity() {
 
-    }
+    return this.system.process.systems.get(Velocity, this.entity);
+
+  }
 });
 exports.CollisionBounds = CollisionBounds;
 var Collision = System.define("Collision", {
-    interface: CollisionBounds,
-    _check: R.curry((function(c, c_) {
-        /* eval.sibilant:9:73 */
+  interface: CollisionBounds,
+  setBounds(height =100, width) {
+    if(this.quads) throw new Error("bounds are already set")
+    this.quads = new QuadTree({
+      x:0,
+      y:0,
+      width,
+      height
+    })
+  },
+  _updateComponent(c) {
 
+    return (function() {
+      if (!((c.type === "static" || c.colliding))) {
+        for(let c of c.system.components);
+      }
+    }).call(this);
+
+  },
+
+  _check: R.curry((function(c, c_) {
+    /* eval.sibilant:9:73 */
+
+    return (function() {
+      if (!((c_.checked === c.system.game.ticker.ticks || c === c_ || c.type === "static"))) {
+        var d = [(c_.minBounds.x - c.maxBounds.x), (c_.minBounds.y - c.maxBounds.y), (c.minBounds.x - c_.maxBounds.x), (c.minBounds.y - c_.maxBounds.y)];
+        var d1x = d[0],
+            d1y = d[1],
+            d2x = d[2],
+            d2y = d[3];
+        c.colliding = false;
         return (function() {
-            if (!((c_.checked === c.system.game.ticker.ticks || c === c_ || c.type === "static"))) {
-                var d = [(c_.minBounds.x - c.maxBounds.x), (c_.minBounds.y - c.maxBounds.y), (c.minBounds.x - c_.maxBounds.x), (c.minBounds.y - c_.maxBounds.y)];
-                var d1x = d[0],
-                    d1y = d[1],
-                    d2x = d[2],
-                    d2y = d[3];
-                c.colliding = false;
-                return (function() {
-                    if (!((d1x >= 0 || d1y >= 0 || d2x >= 0 || d2y >= 0))) {
-                        c.colliding = true;
-                        return c.system.game.events.emit("collision", [c, c_, d]);
-                    }
-                }).call(this);
-            }
+          if (!((d1x >= 0 || d1y >= 0 || d2x >= 0 || d2y >= 0))) {
+            c.colliding = true;
+            return c.system.game.events.emit("collision", [c, c_, d]);
+          }
         }).call(this);
-    })),
-    _updateComponent(c) {
+      }
+    }).call(this);
+  })),
 
-        return (function() {
-            if (!((c.type === "static" || c.colliding))) {
-                c.system.components.each(this._check(c));
-                return c.checked = c.system.game.ticker.ticks;
-            }
-        }).call(this);
+  _updateAll(t = this.t, components = this.components) {
 
+    this.quads.clear()
+    for(let c of c) {
+      this.quads.insert({
+        x:c.pos.x,
+        y:c.pos.y,
+        height:c.scale,
+        width:c.scale
+      })
     }
+
+    for(let c of c) {
+      let possibleCollisions = this.quads.retrieve({x:c.pos.x, y:c.pos.y,})
+      for(let pc of possibleCollisions)  {
+        this.)check(c,pc)
+
+      }
+    }
+
+  },
 });
 exports.Collision = Collision;
