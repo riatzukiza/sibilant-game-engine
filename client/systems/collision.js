@@ -187,7 +187,7 @@ var Collision = System.define("Collision", {
     for(let c of c) {
       let possibleCollisions = this.quads.retrieve({x:c.pos.x, y:c.pos.y,})
       for(let pc of possibleCollisions)  {
-        this.)check(c,pc)
+        this._check(c,pc)
 
       }
     }
