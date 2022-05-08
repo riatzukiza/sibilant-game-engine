@@ -142,7 +142,7 @@ var Collision = System.define("Collision", {
       y:0,
       width,
       height
-    })
+    },15,6)
   },
 
   _check: R.curry((function(c, c_) {
@@ -199,7 +199,7 @@ var Collision = System.define("Collision", {
         })
 
       for(let pc of possibleCollisions)  {
-        console.log("collision?",[pos,c.scale,c.scale] ,pc)
+        // console.log("collision?",[pos,c.scale,c.scale] ,pc)
         let c_ = this.bitField.get([pc.x,pc.y])
         this._check(c,c_)
 
