@@ -175,22 +175,24 @@ var Collision = System.define("Collision", {
   _updateAll(t = this.t, components = this.components) {
 
     this.quads.clear()
-    for(let c of components) {
+
+    components.each(((c) => {
+
       this.quads.insert({
         x:c.pos.x,
         y:c.pos.y,
         height:c.scale,
         width:c.scale
       })
-    }
 
-    for(let c of components) {
+    }));
+
+    components.each(((c) => {
       let possibleCollisions = this.quads.retrieve({x:c.pos.x, y:c.pos.y,})
       for(let pc of possibleCollisions)  {
         this._check(c,pc)
-
       }
-    }
+    }));
 
   },
 });
