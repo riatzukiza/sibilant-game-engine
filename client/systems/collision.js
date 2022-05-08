@@ -79,7 +79,7 @@ var CollisionBounds = Component.define("CollisionBounds", {
   },
   get scale() {
 
-    return (this.physics.scale / 2);
+    return this.physics.scale;
 
   },
   get physics() {
@@ -96,8 +96,8 @@ var CollisionBounds = Component.define("CollisionBounds", {
       y
     } = this.pos;
     return {
-      x: (x - width),
-      y: (y - height)
+      x: x,
+      y: y
     };
 
   },
