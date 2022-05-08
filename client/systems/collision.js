@@ -135,14 +135,14 @@ exports.CollisionBounds = CollisionBounds;
 var Collision = System.define("Collision", {
   interface: CollisionBounds,
 
-  setBounds(height =100, width) {
+  setBounds(height =100, width,maxObjects =10,maxLevels =10) {
     if(this.quads) throw new Error("bounds are already set")
     this.quads = new QuadTree({
       x:0,
       y:0,
       width,
       height
-    },15,6)
+    },maxObjects,maxLevels)
   },
 
   _check: R.curry((function(c, c_) {
