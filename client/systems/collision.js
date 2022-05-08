@@ -203,7 +203,7 @@ var Collision = System.define("Collision", {
           console.log("collision?",[pos,c.scale,c.scale] ,pc)
         }
         let c_ = this.bitField.get([pc.x,pc.y])
-        if(c === c_) this._check(c,c_)
+        if(c !== c_) this._check(c,c_)
 
       }
     }));
