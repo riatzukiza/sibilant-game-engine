@@ -194,7 +194,13 @@ var Collision = System.define("Collision", {
 
     components.each(((c) => {
 
-      let possibleCollisions = this.quads.retrieve({x:c.pos.x, y:c.pos.y,})
+      let possibleCollisions = this.quads.retrieve(
+        {
+          x:c.pos.x,
+          y:c.pos.y,
+          height:c.scale,
+          width:c.scale
+        })
 
       for(let pc of possibleCollisions)  {
         let c_ = this.bitField.get([c.pos.x,c.pos.y])
