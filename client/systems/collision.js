@@ -175,7 +175,7 @@ var Collision = System.define("Collision", {
   _updateAll(t = this.t, components = this.components) {
 
     this.quads.clear()
-    for(let c of c) {
+    for(let c of components) {
       this.quads.insert({
         x:c.pos.x,
         y:c.pos.y,
@@ -184,7 +184,7 @@ var Collision = System.define("Collision", {
       })
     }
 
-    for(let c of c) {
+    for(let c of components) {
       let possibleCollisions = this.quads.retrieve({x:c.pos.x, y:c.pos.y,})
       for(let pc of possibleCollisions)  {
         this._check(c,pc)
