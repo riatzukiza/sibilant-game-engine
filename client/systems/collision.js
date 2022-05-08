@@ -14,6 +14,8 @@ var {
     TreeMap
 } = require("tree-kit");
 
+// const {MatrixMap} = require("../data-structures/matrix-map");
+
 const QuadTree = require("@timohausmann/quadtree-js")
 Array.prototype.each = (function Array$prototype$each$(f) {
     /* Array.prototype.each inc/misc.sibilant:40:0 */
@@ -132,6 +134,7 @@ var CollisionBounds = Component.define("CollisionBounds", {
 exports.CollisionBounds = CollisionBounds;
 var Collision = System.define("Collision", {
   interface: CollisionBounds,
+
   setBounds(height =100, width) {
     if(this.quads) throw new Error("bounds are already set")
     this.quads = new QuadTree({
@@ -175,9 +178,11 @@ var Collision = System.define("Collision", {
   _updateAll(t = this.t, components = this.components) {
 
     this.quads.clear()
+    this.bitField =  create(TreeMap)()
 
     components.each(((c) => {
 
+      this.bitField.insert([c.pos.x,c.pos.y],c)
       this.quads.insert({
         x:c.pos.x,
         y:c.pos.y,
@@ -188,8 +193,12 @@ var Collision = System.define("Collision", {
     }));
 
     components.each(((c) => {
+
       let possibleCollisions = this.quads.retrieve({x:c.pos.x, y:c.pos.y,})
+
       for(let pc of possibleCollisions)  {
+        let c_ = this.bitField.get([c.pos.x,c.pos.y])
+
         this._check(c,pc)
       }
     }));
