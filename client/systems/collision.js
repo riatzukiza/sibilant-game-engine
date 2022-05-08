@@ -209,7 +209,9 @@ var Collision = System.define("Collision", {
         if(c_ !== c) {
           console.log("possible collision detected",{pc,c_,c})
           this._check(c,c_)
+          c.checked = c.system.game.ticker.ticks
         }
+
       }
     }));
 
