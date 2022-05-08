@@ -209,7 +209,7 @@ var Collision = System.define("Collision", {
         console.log({c,c_})
 
 
-        this._check(c,pc)
+        this._check(c,c_)
       }
     }));
 
