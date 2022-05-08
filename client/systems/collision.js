@@ -144,15 +144,6 @@ var Collision = System.define("Collision", {
       height
     })
   },
-  _updateComponent(c) {
-
-    return (function() {
-      if (!((c.type === "static" || c.colliding))) {
-        for(let c of c.system.components);
-      }
-    }).call(this);
-
-  },
 
   _check: R.curry((function(c, c_) {
     /* eval.sibilant:9:73 */
@@ -160,20 +151,16 @@ var Collision = System.define("Collision", {
     console.log("checking for possible collision",c,c_)
 
     return (function() {
-      if (!((c_.checked === c.system.game.ticker.ticks || c === c_ || c.type === "static"))) {
-        var d = [(c_.minBounds.x - c.maxBounds.x), (c_.minBounds.y - c.maxBounds.y), (c.minBounds.x - c_.maxBounds.x), (c.minBounds.y - c_.maxBounds.y)];
-        var d1x = d[0],
-            d1y = d[1],
-            d2x = d[2],
-            d2y = d[3];
-        c.colliding = false;
-        return (function() {
-          if (!((d1x >= 0 || d1y >= 0 || d2x >= 0 || d2y >= 0))) {
-            c.colliding = true;
-            return c.system.game.events.emit("collision", [c, c_, d]);
-          }
-        }).call(this);
-      }
+      var d = [(c_.minBounds.x - c.maxBounds.x), (c_.minBounds.y - c.maxBounds.y), (c.minBounds.x - c_.maxBounds.x), (c.minBounds.y - c_.maxBounds.y)];
+      var d1x = d[0],
+          d1y = d[1],
+          d2x = d[2],
+          d2y = d[3];
+      return (function() {
+        if (!((d1x >= 0 || d1y >= 0 || d2x >= 0 || d2y >= 0))) {
+          return c.system.game.events.emit("collision", [c, c_, d]);
+        }
+      }).call(this);
     }).call(this);
   })),
 
