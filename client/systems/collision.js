@@ -157,7 +157,7 @@ var Collision = System.define("Collision", {
   _check: R.curry((function(c, c_) {
     /* eval.sibilant:9:73 */
 
-    console.log("checking for possible collision",c,c_)
+    console.log("checking for possible collision")
 
     return (function() {
       if (!((c_.checked === c.system.game.ticker.ticks || c === c_ || c.type === "static"))) {
@@ -205,7 +205,7 @@ var Collision = System.define("Collision", {
         })
 
       for(let pc of possibleCollisions)  {
-        let c_ = this.bitField.get([c.pos.x,c.pos.y])
+        let c_ = this.bitField.get([pc.x,pc.y])
         this._check(c,c_)
       }
     }));
