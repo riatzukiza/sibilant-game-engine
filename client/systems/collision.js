@@ -157,7 +157,6 @@ var Collision = System.define("Collision", {
   _check: R.curry((function(c, c_) {
     /* eval.sibilant:9:73 */
 
-    console.log("checking",c,c_)
     return (function() {
       if (!((c_.checked === c.system.game.ticker.ticks || c === c_ || c.type === "static"))) {
         var d = [(c_.minBounds.x - c.maxBounds.x), (c_.minBounds.y - c.maxBounds.y), (c.minBounds.x - c_.maxBounds.x), (c.minBounds.y - c_.maxBounds.y)];
@@ -202,13 +201,9 @@ var Collision = System.define("Collision", {
           height:c.scale,
           width:c.scale
         })
-      console.log({possibleCollisions})
 
       for(let pc of possibleCollisions)  {
         let c_ = this.bitField.get([c.pos.x,c.pos.y])
-        console.log({c,c_})
-
-
         this._check(c,c_)
       }
     }));
