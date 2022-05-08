@@ -79,7 +79,7 @@ var CollisionBounds = Component.define("CollisionBounds", {
   },
   get scale() {
 
-    return (this.physics.scale );
+    return (this.physics.scale / 2);
 
   },
   get physics() {
@@ -89,15 +89,15 @@ var CollisionBounds = Component.define("CollisionBounds", {
   },
   get minBounds() {
 
-    // var height = this.scale,
-    //     width = this.scale;
+    var height = this.scale,
+        width = this.scale;
     var {
       x,
       y
     } = this.pos;
     return {
-      x,
-      y
+      x: (x - width),
+      y: (y - height)
     };
 
   },
@@ -184,7 +184,12 @@ var Collision = System.define("Collision", {
 
     components.each(((c) => {
 
-      this.bitField.set([c.pos.x,c.pos.y],c)
+      const pos =[c.pos.x,c.pos.y]
+      if(this.bitField.has(pos))
+        return c.system.game.events.emit("collision", [c, this.bitField.get(pos)]);
+
+      this.bitField.set(pos,c)
+
       this.quads.insert({
         x:c.pos.x,
         y:c.pos.y,
@@ -196,6 +201,7 @@ var Collision = System.define("Collision", {
 
     components.each(((c) => {
 
+      const pos =[c.pos.x,c.pos.y]
       let possibleCollisions = this.quads.retrieve(
         {
           x:c.pos.x,
@@ -207,7 +213,7 @@ var Collision = System.define("Collision", {
       for(let pc of possibleCollisions)  {
         let c_ = this.bitField.get([pc.x,pc.y])
         if(c_ !== c) {
-          console.log("possible collision detected",{pc,c_,c})
+          console.log("possible collision detected",{pos,pc})
           this._check(c,c_)
           c.checked = c.system.game.ticker.ticks
         }
