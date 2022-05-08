@@ -175,15 +175,16 @@ var Collision = System.define("Collision", {
       const pos =[Math.round(c.pos.x),Math.round(c.pos.y)]
       if(this.bitField.has(pos))
         return c.system.game.events.emit("collision", [c, this.bitField.get(pos)]);
-
-      this.bitField.set(pos,c)
-
-      this.quads.insert({
+      const bounds = {
         x:pos[0],
         y:pos[1],
         height:c.scale,
         width:c.scale
-      })
+      }
+
+      this.bitField.set(pos,c)
+
+      this.quads.insert(bounds)
 
     }));
 
