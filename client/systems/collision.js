@@ -198,6 +198,8 @@ var Collision = System.define("Collision", {
 
       for(let pc of possibleCollisions)  {
         let c_ = this.bitField.get([c.pos.x,c.pos.y])
+        console.log({c,_c})
+
 
         this._check(c,pc)
       }
