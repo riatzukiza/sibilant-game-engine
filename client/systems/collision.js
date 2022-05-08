@@ -157,6 +157,8 @@ var Collision = System.define("Collision", {
           d2y = d[3];
       return (function() {
         if (!((d1x >= 0 || d1y >= 0 || d2x >= 0 || d2y >= 0))) {
+          c.colliding = true
+          c_.colliding = true
           return c.system.game.events.emit("collision", [c, c_, d]);
         }
       }).call(this);
