@@ -3,7 +3,6 @@
     "author": "Aaron Beavers",
     "version": "0.1.0",
     "dependencies": {
-        "@timohausmann/quadtree-js": "^1.2.5",
         "jimp": "0.2.27",
         "js-beautify": "^1.7.5",
         "kit": "git+https://github.com/riatzukiza/kit.git",
@@ -21,5 +20,8 @@
         "source-map-support": "^0.4.11",
         "tree-kit": "git+https://github.com/riatzukiza/tree-kit.git",
         "webgl": "git+https://bitbucket.org/kettlelogic/andy_webgl.git"
+    },
+    "devDependencies": {
+        "@timohausmann/quadtree-js": "^1.2.5"
     }
 }
