@@ -172,15 +172,15 @@ var Collision = System.define("Collision", {
 
     components.each(((c) => {
 
-      const pos =[c.pos.x,c.pos.y]
+      const pos =[Math.round(c.pos.x),Math.round(c.pos.y)]
       if(this.bitField.has(pos))
         return c.system.game.events.emit("collision", [c, this.bitField.get(pos)]);
 
       this.bitField.set(pos,c)
 
       this.quads.insert({
-        x:c.pos.x,
-        y:c.pos.y,
+        x:pos[0],
+        y:pos[1],
         height:c.scale,
         width:c.scale
       })
@@ -189,7 +189,7 @@ var Collision = System.define("Collision", {
 
     components.each(((c) => {
 
-      const pos =[c.pos.x,c.pos.y]
+      const pos =[Math.round(c.pos.x),Math.round(c.pos.y)]
       let possibleCollisions = this.quads.retrieve(
         {
           x:c.pos.x,
